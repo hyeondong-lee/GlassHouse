@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>Glass House</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background-color: black;
+    }
+    video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  </style>
+</head>
+<body>
+  <video id="video" autoplay muted playsinline>
+    <source src="GlassHouse.mp4" type="video/mp4">
+    브라우저가 video 태그를 지원하지 않습니다.
+  </video>
+
+  <script>
+    const video = document.getElementById('video');
+    // 자동 재생
+    video.play();
+
+    // 전체화면 시도 (일부 환경에서는 사용자 조작 필요)
+    if (video.requestFullscreen) {
+      video.requestFullscreen().catch(() => {}); // 실패 무시
+    } else if (video.webkitRequestFullscreen) {
+      video.webkitRequestFullscreen();
+    } else if (video.msRequestFullscreen) {
+      video.msRequestFullscreen();
+    }
+  </script>
+</body>
+</html>
