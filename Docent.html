@@ -4,42 +4,46 @@
   	<meta charset="UTF-8">
   	<title>모든, 사라지는 것들</title>
 	<style>
-  	body {
-    		margin: 0;
-    		background: black;
-    		display: flex;
-    		flex-direction: column;
-    		height: 100vh; /* 전체 화면 높이 */
-  	}
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background: black;
+  }
 
-  	.image-container {
-    		flex: 1; /* 남은 공간을 모두 차지 */
-    		display: flex;
-    		justify-content: center;
-    		align-items: center;
-    		overflow: hidden;
-  	}
+  body {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
 
-  	.image-container img {
-    		height: 100%;
-    		width: auto;
-    		object-fit: contain;
-  	}
+  .image-container {
+    flex: 1 1 auto; /* 남은 공간 자동 할당 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
 
-  	.audio-player {
-    		height: 60px; /* 플레이어 높이 고정 */
-    		display: flex;
-    		justify-content: center;
-    		align-items: center;
-    		background: rgba(0, 0, 0, 0); /* 반투명 배경 */
-  	}
+  .image-container img {
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain; /* 비율 유지 */
+  }
 
- 	.audio-player audio {
-    		width: 300px; /* 오디오 플레이어 가로 크기 */
-		background: transparent;
-  	}
+  .audio-player {
+    flex: 0 0 auto; /* 고정 영역 */
+    height: 60px;   /* 플레이어 높이 */
+    background: transparent; /* 투명 배경 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 
-	</style>
+  .audio-player audio {
+    width: 300px; /* 플레이어 폭 */
+  }
+</style>
 </head>
 <body>
 
