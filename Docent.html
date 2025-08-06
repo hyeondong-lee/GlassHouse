@@ -4,57 +4,44 @@
   	<meta charset="UTF-8">
   	<title>모든, 사라지는 것들</title>
 	<style>
-  html, body {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    background: black;
-  }
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+background-color:black;
+}
 
-  body {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-  }
+.container {
+  position: relative;
+  height: 100vh; /* 브라우저 높이에 맞춤 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-  .image-container {
-    flex: 1 1 auto; /* 남은 공간 자동 할당 */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-  }
+.full-height-image {
+  height: 100vh;  /* 브라우저 높이와 동일 */
+  width: auto;    /* 비율 유지 */
+  object-fit: cover; /* 이미지 꽉 채우되 비율 유지 */
+}
 
-  .image-container img {
-    max-height: 100%;
-    max-width: 100%;
-    object-fit: contain; /* 비율 유지 */
-  }
-
-  .audio-player {
-    flex: 0 0 auto; /* 고정 영역 */
-    height: 60px;   /* 플레이어 높이 */
-    background: transparent; /* 투명 배경 */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .audio-player audio {
-    width: 300px; /* 플레이어 폭 */
-  }
+.audio-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(255,255,255,0.3); /* 투명 배경 */
+  border-radius: 8px;
+}
 </style>
 </head>
 <body>
 
-	<div class="image-container">
-  		<img src="Docent.jpg" alt="배경 이미지">
-	</div>
-
-	<div class="audio-player">
-  		<audio controls autoplay loop>
+	<div class="container">
+  		<img src="Docent.jpg" alt="Image" class="full-height-image">
+  		<audio controls class="audio-center">
     		<source src="Docent.mp3" type="audio/mpeg">
-    		브라우저가 오디오 태그를 지원하지 않습니다.
+    		Your browser does not support the audio element.
   		</audio>
 	</div>
 

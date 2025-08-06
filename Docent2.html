@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  	<meta charset="UTF-8">
+  	<title>모든, 사라지는 것들</title>
+	<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+	background-color: black;
+  }
+
+  .container {
+    position: relative;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .full-height-image {
+    height: 100vh;
+    width: auto;
+    object-fit: cover;
+  }
+
+  .play-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.3);
+    padding: 2vw; /* PC: 넉넉한 패딩 */
+    border-radius: 50%;
+    cursor: pointer;
+    user-select: none;
+    transition: opacity 0.5s ease, padding 0.3s ease, background 0.3s ease;
+  }
+
+  .play-button svg {
+    width: 8vw;
+    height: 8vw;
+    max-width: 80px;
+    max-height: 80px;
+    min-width: 40px;
+    min-height: 40px;
+  }
+
+  .play-button.hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* 모바일 전용 조정 */
+  @media (max-width: 768px) {
+    .play-button {
+      padding: 4vw; /* 모바일: 더 작게 */
+      background: rgba(0, 0, 0, 0.25); /* 투명도 높임 */
+    }
+    .play-button svg {
+      width: 14vw;
+      height: 14vw;
+      max-width: 64px;
+      max-height: 64px;
+    }
+  }
+	</style>
+</head>
+<body>
+
+<div class="container">
+  <img src="Docent.jpg" alt="Image" class="full-height-image">
+  <div class="play-button" id="playBtn">
+    <!-- 재생 아이콘 -->
+    <svg id="playIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white">
+      <path d="M8 5v14l11-7z"/>
+    </svg>
+    <!-- 일시정지 아이콘 -->
+    <svg id="pauseIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" style="display:none;">
+      <path d="M6 19h4V5H6zm8-14v14h4V5h-4z"/>
+    </svg>
+  </div>
+  <audio id="audio" src="Docent.mp3"></audio>
+</div>
+
+<script>
+  const playBtn = document.getElementById('playBtn');
+  const playIcon = document.getElementById('playIcon');
+  const pauseIcon = document.getElementById('pauseIcon');
+  const audio = document.getElementById('audio');
+
+  let isPlaying = false;
+  let hideTimeout;
+
+  function hideButtonAfterDelay() {
+    clearTimeout(hideTimeout);
+    hideTimeout = setTimeout(() => {
+      playBtn.classList.add('hidden');
+    }, 2000); // 2초 후 숨김
+  }
+
+  function showButton() {
+    playBtn.classList.remove('hidden');
+  }
+
+  function togglePlay() {
+    if (isPlaying) {
+      audio.pause();
+    } else {
+      audio.play();
+    }
+  }
+
+  playBtn.addEventListener('click', togglePlay);
+  playBtn.addEventListener('touchstart', togglePlay);
+
+  audio.addEventListener('play', () => {
+    isPlaying = true;
+    playIcon.style.display = 'none';
+    pauseIcon.style.display = 'block';
+    hideButtonAfterDelay();
+  });
+
+  audio.addEventListener('pause', () => {
+    isPlaying = false;
+    playIcon.style.display = 'block';
+    pauseIcon.style.display = 'none';
+    showButton();
+  });
+
+  document.addEventListener('click', (e) => {
+    if (isPlaying && !playBtn.contains(e.target)) {
+      showButton();
+      hideButtonAfterDelay();
+    }
+  });
+
+  document.addEventListener('touchstart', (e) => {
+    if (isPlaying && !playBtn.contains(e.target)) {
+      showButton();
+      hideButtonAfterDelay();
+    }
+  });
+</script>
+
+</body>
+</html>
