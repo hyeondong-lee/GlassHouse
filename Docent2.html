@@ -8,12 +8,12 @@
     margin: 0;
     padding: 0;
     height: 100%;
-    background: #000; /* 여백 색상 */
+    background: #000;
   }
 
   .container {
     position: relative;
-    height: 100vh;
+    height: calc(var(--vh, 1vh) * 100); /* 모바일 브라우저 높이 대응 */
     width: 100vw;
     overflow: hidden;
     background: #000;
@@ -23,10 +23,10 @@
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;   /* 화면 너비 */
-    height: 100%;  /* 화면 높이 */
-    object-fit: contain; /* 비율 유지, 잘림 없음, 여백 발생 가능 */
-    background-color: #000; /* 여백 부분 배경 */
+    width: 100%;   
+    height: 100%;
+    object-fit: contain; /* 비율 유지, 잘림 없음 */
+    background-color: #000;
   }
 
   .play-button {
@@ -89,18 +89,24 @@
 </div>
 
 <script>
+  // 모바일 브라우저 높이 계산 (주소창 영역 제외)
+  function setVh() {
+    document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
+  }
+  window.addEventListener('resize', setVh);
+  setVh();
+
   const playBtn = document.getElementById('playBtn');
   const playIcon = document.getElementById('playIcon');
   const pauseIcon = document.getElementById('pauseIcon');
   const audio = document.getElementById('audio');
 
-  let isPlaying = false;
   let hideTimeout;
 
   function hideButtonAfterDelay() {
     clearTimeout(hideTimeout);
     hideTimeout = setTimeout(() => {
-      if (isPlaying) playBtn.classList.add('hidden');
+      if (!audio.paused) playBtn.classList.add('hidden');
     }, 2000);
   }
 
@@ -108,43 +114,42 @@
     playBtn.classList.remove('hidden');
   }
 
-function togglePlay() {
-  if (audio.paused) {
-    audio.play();
-  } else {
-    audio.pause();
+  function togglePlay() {
+    if (audio.paused) {
+      audio.play();
+    } else {
+      audio.pause();
+    }
   }
-}
 
-playBtn.addEventListener('click', togglePlay);
-playBtn.addEventListener('touchstart', togglePlay);
+  playBtn.addEventListener('click', togglePlay);
+  playBtn.addEventListener('touchstart', togglePlay);
 
-audio.addEventListener('play', () => {
-  playIcon.style.display = 'none';
-  pauseIcon.style.display = 'block';
-  hideButtonAfterDelay();
-});
+  audio.addEventListener('play', () => {
+    playIcon.style.display = 'none';
+    pauseIcon.style.display = 'block';
+    hideButtonAfterDelay();
+  });
 
-audio.addEventListener('pause', () => {
-  playIcon.style.display = 'block';
-  pauseIcon.style.display = 'none';
-  showButton();
-});
+  audio.addEventListener('pause', () => {
+    playIcon.style.display = 'block';
+    pauseIcon.style.display = 'none';
+    showButton();
+  });
 
   document.addEventListener('click', (e) => {
-    if (isPlaying && !playBtn.contains(e.target)) {
+    if (!audio.paused && !playBtn.contains(e.target)) {
       showButton();
       hideButtonAfterDelay();
     }
   });
 
   document.addEventListener('touchstart', (e) => {
-    if (isPlaying && !playBtn.contains(e.target)) {
+    if (!audio.paused && !playBtn.contains(e.target)) {
       showButton();
       hideButtonAfterDelay();
     }
   });
 </script>
-
 </body>
 </html>
