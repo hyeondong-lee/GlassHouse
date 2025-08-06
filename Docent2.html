@@ -108,30 +108,28 @@
     playBtn.classList.remove('hidden');
   }
 
-  function togglePlay() {
-    if (isPlaying) {
-      audio.pause();
-    } else {
-      audio.play();
-    }
+function togglePlay() {
+  if (audio.paused) {
+    audio.play();
+  } else {
+    audio.pause();
   }
+}
 
-  playBtn.addEventListener('click', togglePlay);
-  playBtn.addEventListener('touchstart', togglePlay);
+playBtn.addEventListener('click', togglePlay);
+playBtn.addEventListener('touchstart', togglePlay);
 
-  audio.addEventListener('play', () => {
-    isPlaying = true;
-    playIcon.style.display = 'none';
-    pauseIcon.style.display = 'block';
-    hideButtonAfterDelay();
-  });
+audio.addEventListener('play', () => {
+  playIcon.style.display = 'none';
+  pauseIcon.style.display = 'block';
+  hideButtonAfterDelay();
+});
 
-  audio.addEventListener('pause', () => {
-    isPlaying = false;
-    playIcon.style.display = 'block';
-    pauseIcon.style.display = 'none';
-    showButton(); // ✅ 일시정지 시 항상 버튼 표시
-  });
+audio.addEventListener('pause', () => {
+  playIcon.style.display = 'block';
+  pauseIcon.style.display = 'none';
+  showButton();
+});
 
   document.addEventListener('click', (e) => {
     if (isPlaying && !playBtn.contains(e.target)) {
