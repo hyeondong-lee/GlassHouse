@@ -8,21 +8,25 @@
     margin: 0;
     padding: 0;
     height: 100%;
-	background-color: black;
+    background: #000; /* 여백 색상 */
   }
 
   .container {
     position: relative;
     height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    width: 100vw;
+    overflow: hidden;
+    background: #000;
   }
 
   .full-height-image {
-    height: 100vh;
-    width: auto;
-    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;   /* 화면 너비 */
+    height: 100%;  /* 화면 높이 */
+    object-fit: contain; /* 비율 유지, 잘림 없음, 여백 발생 가능 */
+    background-color: #000; /* 여백 부분 배경 */
   }
 
   .play-button {
@@ -31,11 +35,12 @@
     left: 50%;
     transform: translate(-50%, -50%);
     background: rgba(0, 0, 0, 0.3);
-    padding: 2vw; /* PC: 넉넉한 패딩 */
+    padding: 2vw;
     border-radius: 50%;
     cursor: pointer;
     user-select: none;
     transition: opacity 0.5s ease, padding 0.3s ease, background 0.3s ease;
+    z-index: 2;
   }
 
   .play-button svg {
@@ -52,11 +57,10 @@
     pointer-events: none;
   }
 
-  /* 모바일 전용 조정 */
   @media (max-width: 768px) {
     .play-button {
-      padding: 4vw; /* 모바일: 더 작게 */
-      background: rgba(0, 0, 0, 0.25); /* 투명도 높임 */
+      padding: 4vw;
+      background: rgba(0, 0, 0, 0.25);
     }
     .play-button svg {
       width: 14vw;
@@ -65,7 +69,7 @@
       max-height: 64px;
     }
   }
-	</style>
+</style>
 </head>
 <body>
 
@@ -96,8 +100,8 @@
   function hideButtonAfterDelay() {
     clearTimeout(hideTimeout);
     hideTimeout = setTimeout(() => {
-      playBtn.classList.add('hidden');
-    }, 2000); // 2초 후 숨김
+      if (isPlaying) playBtn.classList.add('hidden');
+    }, 2000);
   }
 
   function showButton() {
@@ -126,7 +130,7 @@
     isPlaying = false;
     playIcon.style.display = 'block';
     pauseIcon.style.display = 'none';
-    showButton();
+    showButton(); // ✅ 일시정지 시 항상 버튼 표시
   });
 
   document.addEventListener('click', (e) => {
