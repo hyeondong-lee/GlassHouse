@@ -39,7 +39,7 @@
     border-radius: 50%;
     cursor: pointer;
     user-select: none;
-    /*transition: opacity 0.5s ease, padding 0.3s ease, background 0.3s ease;*/
+    transition: opacity 0.5s ease, padding 0.3s ease, background 0.3s ease;
     z-index: 2;
   }
 
@@ -122,8 +122,8 @@
     }
   }
 
-  playBtn.addEventListener('click', togglePlay);
-  playBtn.addEventListener('touchstart', togglePlay);
+  // click/touch 대신 pointerup 하나만 사용 → 중복 실행 방지
+  playBtn.addEventListener('pointerup', togglePlay);
 
   audio.addEventListener('play', () => {
     playIcon.style.display = 'none';
@@ -137,14 +137,7 @@
     showButton();
   });
 
-  document.addEventListener('click', (e) => {
-    if (!audio.paused && !playBtn.contains(e.target)) {
-      showButton();
-      hideButtonAfterDelay();
-    }
-  });
-
-  document.addEventListener('touchstart', (e) => {
+  document.addEventListener('pointerup', (e) => {
     if (!audio.paused && !playBtn.contains(e.target)) {
       showButton();
       hideButtonAfterDelay();
